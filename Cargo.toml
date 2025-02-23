@@ -2,6 +2,14 @@
 name = "valor_kv"
 version = "0.1.0"
 edition = "2021"
+authors = ["Alexander Konietzko <me@alexanderkonietzko.com>"]
+license = "MIT"
+description = "Simple and efficient key value store built with Rust"
+readme = "README.md"
+homepage = "https://github.com/alex289/valor-kv"
+repository = "https://github.com/alex289/valor-kv"
+keywords = ["kv"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 axum = "0.8.1"
