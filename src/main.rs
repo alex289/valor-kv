@@ -38,7 +38,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let data_file_path: String = config
         .get_string("data_file_path")
-        .unwrap_or("data.json".to_string());
+        .unwrap_or("data.bin".to_string());
     let bind_address: String = config
         .get_string("bind_address")
         .unwrap_or("127.0.0.1:3000".to_string());

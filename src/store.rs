@@ -1,7 +1,9 @@
 use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
-use std::io::{BufReader, BufWriter};
+use std::io::{BufReader, BufWriter, Read};
 use std::sync::Mutex;
+
+use bincode::{deserialize_from, serialize_into};
 
 pub struct KvStore {
     data: Mutex<HashMap<String, String>>,
@@ -28,20 +30,27 @@ impl KvStore {
         let file = OpenOptions::new()
             .read(true)
             .write(true)
-            .create(true) // Create the file if it doesn't exist
+            .create(true)
             .open(path)?;
 
+        let mut reader = BufReader::new(file);
+        let mut buffer = Vec::new();
+
+        if reader.read_to_end(&mut buffer)? == 0 {
+            // File is empty, initialize with an empty HashMap
+            let mut store = self.data.lock().unwrap();
+            *store = HashMap::new();
+            return Ok(());
+        }
+
+        let file = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .open(path)?;
         let reader = BufReader::new(file);
-        let data: HashMap<String, String> = match serde_json::from_reader(reader) {
-            Ok(data) => data,
-            Err(e) if e.is_eof() => {
-                // If the file is empty, create a new HashMap
-                HashMap::new()
-            }
-            Err(e) => {
-                return Err(e.into());
-            }
-        };
+
+        let data: HashMap<String, String> = deserialize_from(reader)?;
 
         let mut store = self.data.lock().unwrap();
         *store = data;
@@ -52,7 +61,7 @@ impl KvStore {
         let data = self.data.lock().unwrap();
         let file = File::create(path)?;
         let writer = BufWriter::new(file);
-        serde_json::to_writer(writer, &*data)?;
+        serialize_into(writer, &*data)?;
         Ok(())
     }
 }
@@ -97,7 +106,7 @@ mod tests {
     #[test]
     fn test_load_from_nonexistent_file() {
         let store = KvStore::new();
-        let path = "nonexistent_file.json";
+        let path = "nonexistent_file.bin";
 
         let result = store.load_from_file(path);
 
