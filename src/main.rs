@@ -19,8 +19,7 @@ async fn shutdown_signal() {
 fn load_config() -> Result<Config, ConfigError> {
     let builder = Config::builder()
         .add_source(File::with_name("config").required(false))
-        .add_source(Environment::with_prefix("VALORKV").separator("_"))
-        ;
+        .add_source(Environment::with_prefix("VALORKV").separator("_"));
     builder.build()
 }
 

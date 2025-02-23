@@ -31,6 +31,7 @@ impl KvStore {
             .read(true)
             .write(true)
             .create(true)
+            .truncate(false)
             .open(path)?;
 
         let mut reader = BufReader::new(file);
@@ -47,6 +48,7 @@ impl KvStore {
             .read(true)
             .write(true)
             .create(true)
+            .truncate(false)
             .open(path)?;
         let reader = BufReader::new(file);
 
