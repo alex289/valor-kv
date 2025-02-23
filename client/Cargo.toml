@@ -1,6 +1,6 @@
 [package]
 name = "valor_kv_client"
-version = "0.1.0"
+version = "v0.2.0"
 edition = "2021"
 authors = ["Alexander Konietzko <me@alexanderkonietzko.com>"]
 license = "MIT"
