@@ -105,6 +105,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Get previous tag
@@ -169,6 +170,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Setup Rust
