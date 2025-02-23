@@ -20,6 +20,7 @@ tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 
 [dev-dependencies]
+serial_test = "3.2.0"
 valor_kv_client = { path = "client" }
 
 [workspace]

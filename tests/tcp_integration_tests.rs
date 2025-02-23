@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
     use serde::{Deserialize, Serialize};
+    use serial_test::serial;
     use std::{
         process::{Child, Command},
         thread,
@@ -33,6 +34,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_set_and_get() -> Result<(), Box<dyn std::error::Error>> {
         let server = start_server();
 
@@ -49,6 +51,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_get_nonexistent_key() -> Result<(), Box<dyn std::error::Error>> {
         let server = start_server();
 
