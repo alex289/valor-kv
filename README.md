@@ -26,7 +26,11 @@ ValorKV is a lightweight key-value store built in Rust, designed for speed and s
 Using Docker:
 
 ```bash
-docker run -p 6380:6380 -d alex289/valor_kv
+docker run -p 6380:6380 -d ghcr.io/alex289/valor_kv:latest
+
+#or
+
+docker run -p 6380:6380 -d alexdev28/valor_kv:latest
 ```
 
 Using Cargo:
