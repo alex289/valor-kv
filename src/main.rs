@@ -41,7 +41,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap_or("data.bin".to_string());
     let bind_address: String = config
         .get_string("bind_address")
-        .unwrap_or("127.0.0.1:3000".to_string());
+        .unwrap_or("0.0.0.0:6380".to_string());
 
     let kv_store = Arc::new(KvStore::new());
 
