@@ -1,11 +1,11 @@
 #[cfg(test)]
 mod tests {
+    use serde::{Deserialize, Serialize};
     use std::{
-        process::{Command, Child},
+        process::{Child, Command},
         thread,
         time::Duration,
     };
-    use serde::{Serialize, Deserialize};
     use valor_kv_client::KvStoreClient;
 
     #[derive(Serialize, Deserialize, Debug)]
