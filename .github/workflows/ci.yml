@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build-test-lint:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
