@@ -15,6 +15,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Rust
+        run: |
+          rustup toolchain install stable
+          rustup default stable
+
       - name: Get next version
         id: get_next_version
         uses: thenativeweb/get-next-version@main
@@ -34,15 +39,6 @@ jobs:
           echo "previousTag: $name"
           echo "previousTag=$name" >> $GITHUB_ENV
 
-      - name: Create new tag
-        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -a ${{ steps.get_next_version.outputs.version }} -m "Release ${{ steps.get_next_version.outputs.version }}"
-          git push origin ${{ steps.get_next_version.outputs.version }}
-          git checkout main
-
       - name: Update CHANGELOG
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         id: changelog
@@ -59,15 +55,26 @@ jobs:
           version=${version#v}  # Remove the 'v' prefix
           sed -i "s/^version = \".*\"/version = \"$version\"/g" Cargo.toml
           sed -i "s/^version = \".*\"/version = \"$version\"/g" client/Cargo.toml
+          cargo update valor_kv
+          cargo update valor_kv_client
 
       - name: Commit changes
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Cargo.toml client/Cargo.toml CHANGELOG.md
+          git add Cargo.toml client/Cargo.toml Cargo.lock CHANGELOG.md
           git commit -m "chore: update version to ${{ steps.get_next_version.outputs.version }}"
           git push origin main
+
+      - name: Create new tag
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a ${{ steps.get_next_version.outputs.version }} -m "Release ${{ steps.get_next_version.outputs.version }}"
+          git push origin ${{ steps.get_next_version.outputs.version }}
+          git checkout main
 
       - name: Create Release
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
