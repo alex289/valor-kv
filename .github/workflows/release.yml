@@ -39,15 +39,6 @@ jobs:
           echo "previousTag: $name"
           echo "previousTag=$name" >> $GITHUB_ENV
 
-      - name: Update CHANGELOG
-        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
-        id: changelog
-        uses: requarks/changelog-action@v1
-        with:
-          token: ${{ github.token }}
-          fromTag: ${{ steps.get_next_version.outputs.version }}
-          toTag: ${{ env.previousTag }}
-
       - name: Update Cargo.toml version
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         run: |
@@ -58,12 +49,12 @@ jobs:
           cargo update valor_kv
           cargo update valor_kv_client
 
-      - name: Commit changes
+      - name: Commit version changes
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Cargo.toml client/Cargo.toml Cargo.lock CHANGELOG.md
+          git add Cargo.toml client/Cargo.toml Cargo.lock
           git commit -m "chore: update version to ${{ steps.get_next_version.outputs.version }}"
           git push origin main
 
@@ -75,6 +66,24 @@ jobs:
           git tag -a ${{ steps.get_next_version.outputs.version }} -m "Release ${{ steps.get_next_version.outputs.version }}"
           git push origin ${{ steps.get_next_version.outputs.version }}
           git checkout main
+
+      - name: Update CHANGELOG
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          fromTag: ${{ steps.get_next_version.outputs.version }}
+          toTag: ${{ env.previousTag }}
+
+      - name: Commit version changes
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "docs: update version to ${{ steps.get_next_version.outputs.version }}"
+          git push origin main
 
       - name: Create Release
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
