@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Get the value for the key
     let value = client.get("mykey".to_string())?;
-    println!("Value for mykey: {:?}", value);
+    println!("Value for mykey: {:?}", value.unwrap());
 
     Ok(())
 }
