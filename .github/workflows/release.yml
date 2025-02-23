@@ -55,10 +55,10 @@ jobs:
       - name: Update Cargo.toml version
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         run: |
-          awk '/^\[package\]/{p=1} p&&/^version = /{sub(/".*"/, "\"${{ steps.get_next_version.outputs.version }}\""); p=0} 1' Cargo.toml > Cargo.toml.tmp
-          mv Cargo.toml.tmp Cargo.toml
-          awk '/^\[package\]/{p=1} p&&/^version = /{sub(/".*"/, "\"${{ steps.get_next_version.outputs.version }}\""); p=0} 1' client/Cargo.toml > client/Cargo.toml.tmp
-          mv client/Cargo.toml.tmp client/Cargo.toml
+          version=${{ steps.get_next_version.outputs.version }}
+          version=${version#v}  # Remove the 'v' prefix
+          sed -i "s/^version = \".*\"/version = \"$version\"/g" Cargo.toml
+          sed -i "s/^version = \".*\"/version = \"$version\"/g" client/Cargo.toml
 
       - name: Create Release
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
