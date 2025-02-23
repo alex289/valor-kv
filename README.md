@@ -26,11 +26,11 @@ ValorKV is a lightweight key-value store built in Rust, designed for speed and s
 Using Docker:
 
 ```bash
-docker run -p 6380:6380 -d ghcr.io/alex289/valor_kv:latest
+docker run -p 6380:6380 -d ghcr.io/alex289/valor-kv:latest
 
 #or
 
-docker run -p 6380:6380 -d alexdev28/valor_kv:latest
+docker run -p 6380:6380 -d alexdev28/valor-kv:latest
 ```
 
 Using Cargo:
@@ -44,27 +44,26 @@ valor_kv
 
 1.  **Add the `valor_kv_client` dependency to your `Cargo.toml`:**
 
-    ```toml
-    [dependencies]
-    valor_kv_client = "0.1.0"  # Or the latest version
-    ```
+```bash
+cargo add valor_kv_client
+```
 
 2.  **Use the client library in your Rust code:**
 
-    ```rust
-    use valor_kv_client::KvStoreClient;
+```rust
+use valor_kv_client::KvStoreClient;
 
-    fn main() -> Result<(), Box<dyn std::error::Error>> {
-        let client = KvStoreClient::new("127.0.0.1:6380".to_string()); // Replace with your server address
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = KvStoreClient::new("127.0.0.1:6380".to_string()); // Replace with your server address
 
-        client.set("mykey".to_string(), "myvalue".to_string())?;
-        let value = client.get("mykey".to_string())?;
+    client.set("mykey".to_string(), "myvalue".to_string())?;
+    let value = client.get("mykey".to_string())?;
 
-        println!("Value for mykey: {:?}", value);
+    println!("Value for mykey: {:?}", value.unwrap());
 
-        Ok(())
-    }
-    ```
+    Ok(())
+}
+```
 
 ### Configuration
 
