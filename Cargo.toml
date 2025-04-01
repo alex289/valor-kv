@@ -15,7 +15,6 @@ categories = ["database-implementations"]
 bincode = "2.0.1"
 config = "0.15.11"
 ctrlc = "3.4.5"
-serde = { version = "1.0.219", features = ["derive"] }
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 

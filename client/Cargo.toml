@@ -13,7 +13,6 @@ categories = ["database-implementations"]
 
 [dependencies]
 bincode = "2.0.1"
-serde = { version = "1.0.219", features = ["derive"] }
 
 [[example]]
 name = "basic_usage"

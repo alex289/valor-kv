@@ -879,7 +879,6 @@ dependencies = [
  "bincode",
  "config",
  "ctrlc",
- "serde",
  "serial_test",
  "tracing",
  "tracing-subscriber",
@@ -891,7 +890,6 @@ name = "valor_kv_client"
 version = "0.2.2"
 dependencies = [
  "bincode",
- "serde",
 ]
 
 [[package]]
