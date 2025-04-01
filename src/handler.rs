@@ -1,5 +1,5 @@
 use crate::store::KvStore;
-use bincode::{encode_to_vec, borrow_decode_from_slice, Decode, Encode};
+use bincode::{borrow_decode_from_slice, encode_to_vec, Decode, Encode};
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::sync::Arc;
@@ -27,7 +27,8 @@ pub fn handle_client(
             break; // Connection closed
         }
 
-        let (message, _): (Message, usize) = borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
+        let (message, _): (Message, usize) =
+            borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
 
         let response = handle_message(message, &kv_store)?;
 

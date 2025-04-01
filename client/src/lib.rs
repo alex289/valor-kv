@@ -36,7 +36,8 @@ impl KvStoreClient {
         let mut data = vec![0u8; len];
         stream.read_exact(&mut data)?;
 
-        let (response, _): (Message, usize) = borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
+        let (response, _): (Message, usize) =
+            borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
         match response {
             Message::Response(value) => Ok(value),
             _ => Err("Unexpected response".into()),
@@ -61,7 +62,8 @@ impl KvStoreClient {
         let mut data = vec![0u8; len];
         stream.read_exact(&mut data)?;
 
-        let (response, _): (Message, usize) = borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
+        let (response, _): (Message, usize) =
+            borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
         match response {
             Message::Response(None) => Ok(()),
             _ => Err("Unexpected response".into()),

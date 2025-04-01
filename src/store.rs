@@ -51,7 +51,8 @@ impl KvStore {
             .truncate(false)
             .open(path)?;
 
-        let data: HashMap<String, String> = decode_from_std_read(&mut file, bincode::config::standard())?;
+        let data: HashMap<String, String> =
+            decode_from_std_read(&mut file, bincode::config::standard())?;
 
         let mut store = self.data.lock().unwrap();
         *store = data;
