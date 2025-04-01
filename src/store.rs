@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
-use std::io::{BufReader, BufWriter, Read};
+use std::io::{BufReader, Read};
 use std::sync::Mutex;
 
-use bincode::{deserialize_from, serialize_into};
+use bincode::{decode_from_std_read, encode_into_std_write};
 
 pub struct KvStore {
     data: Mutex<HashMap<String, String>>,
@@ -44,15 +44,15 @@ impl KvStore {
             return Ok(());
         }
 
-        let file = OpenOptions::new()
+        let mut file = OpenOptions::new()
             .read(true)
             .write(true)
             .create(true)
             .truncate(false)
             .open(path)?;
-        let reader = BufReader::new(file);
 
-        let data: HashMap<String, String> = deserialize_from(reader)?;
+        let data: HashMap<String, String> =
+            decode_from_std_read(&mut file, bincode::config::standard())?;
 
         let mut store = self.data.lock().unwrap();
         *store = data;
@@ -61,9 +61,8 @@ impl KvStore {
 
     pub fn save_to_file(&self, path: &str) -> Result<(), Box<dyn std::error::Error>> {
         let data = self.data.lock().unwrap();
-        let file = File::create(path)?;
-        let writer = BufWriter::new(file);
-        serialize_into(writer, &*data)?;
+        let mut file = File::create(path)?;
+        encode_into_std_write(&*data, &mut file, bincode::config::standard())?;
         Ok(())
     }
 }

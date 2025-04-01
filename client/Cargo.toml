@@ -12,8 +12,7 @@ keywords = ["kv", "client"]
 categories = ["database-implementations"]
 
 [dependencies]
-bincode = "1.3.3"
-serde = { version = "1.0.218", features = ["derive"] }
+bincode = "2.0.1"
 
 [[example]]
 name = "basic_usage"
