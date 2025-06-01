@@ -14,7 +14,7 @@ categories = ["database-implementations"]
 [dependencies]
 bincode = "2.0.1"
 config = "0.15.11"
-ctrlc = "3.4.6"
+ctrlc = "3.4.7"
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 
