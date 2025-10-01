@@ -19,12 +19,13 @@ jobs:
         run: |
           rustup toolchain install stable
           rustup default stable
+          rustup component add clippy rustfmt
 
       - name: Get next version
         id: get_next_version
         uses: thenativeweb/get-next-version@main
         with:
-          prefix: 'v'
+          prefix: "v"
 
       - name: Show the next version
         run: |
@@ -177,6 +178,7 @@ jobs:
         run: |
           rustup toolchain install stable
           rustup default stable
+          rustup component add clippy rustfmt
 
       - name: Publish server to crates.io
         run: cargo publish --token ${CRATES_TOKEN}
