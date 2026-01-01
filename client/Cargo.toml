@@ -12,7 +12,7 @@ keywords = ["kv", "client"]
 categories = ["database-implementations"]
 
 [dependencies]
-bincode = "2.0.1"
+bincode = "3.0.0"
 
 [[example]]
 name = "basic_usage"
