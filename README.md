@@ -3,12 +3,12 @@
 ![Crates.io Version](https://img.shields.io/crates/v/valor_kv?style=flat)
 ![Crates.io Total Downloads](https://img.shields.io/crates/d/valor_kv)
 
-ValorKV is a lightweight key-value store built in Rust, designed for speed and simplicity. It uses a custom TCP protocol for communication and bincode for efficient serialization.
+ValorKV is a lightweight key-value store built in Rust, designed for speed and simplicity. It uses a custom TCP protocol for communication and postcard for efficient serialization.
 
 ## Features
 
 *   **Fast TCP Communication:** Uses a custom TCP protocol for low-latency communication.
-*   **Efficient Serialization:** Employs bincode for fast and compact data serialization.
+*   **Efficient Serialization:** Employs postcard for fast and compact data serialization.
 *   **In-Memory Storage:** Stores data in memory for quick access.
 *   **Persistence:** Saves data to disk on shutdown and loads it on startup.
 *   **Configurable:** Uses a `config.toml` file and environment variables for configuration.

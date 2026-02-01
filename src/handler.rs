@@ -1,10 +1,11 @@
 use crate::store::KvStore;
-use bincode::{borrow_decode_from_slice, encode_to_vec, Decode, Encode};
+use postcard::{from_bytes, to_allocvec};
+use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::sync::Arc;
 
-#[derive(Encode, Decode, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum Message {
     Get(String),
     Set(String, String),
@@ -27,12 +28,11 @@ pub fn handle_client(
             break; // Connection closed
         }
 
-        let (message, _): (Message, usize) =
-            borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
+        let message: Message = from_bytes(&data).unwrap();
 
         let response = handle_message(message, &kv_store)?;
 
-        let response_data = encode_to_vec(&response, bincode::config::standard()).unwrap();
+        let response_data = to_allocvec(&response).unwrap();
         let response_len = response_data.len() as u32;
         let response_len_buf = response_len.to_be_bytes();
 

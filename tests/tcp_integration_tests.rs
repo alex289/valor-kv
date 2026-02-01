@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use bincode::{Decode, Encode};
+    use serde::{Deserialize, Serialize};
     use serial_test::serial;
     use std::{
         process::{Child, Command},
@@ -9,7 +9,7 @@ mod tests {
     };
     use valor_kv_client::KvStoreClient;
 
-    #[derive(Decode, Encode, Debug)]
+    #[derive(Serialize, Deserialize, Debug)]
     enum Message {
         Get(String),
         Set(String, String),
