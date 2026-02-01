@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use bincode::{Decode, Encode};
+    use serde::{Deserialize, Serialize};
     use serial_test::serial;
     use std::{
         process::{Child, Command},

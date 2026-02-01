@@ -12,7 +12,8 @@ keywords = ["kv", "client"]
 categories = ["database-implementations"]
 
 [dependencies]
-bincode = "3.0.0"
+postcard = { version = "1.1", features = ["alloc", "use-std"] }
+serde = { version = "1.0", features = ["derive"] }
 
 [[example]]
 name = "basic_usage"

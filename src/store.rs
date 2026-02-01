@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
-use std::io::{BufReader, Read};
+use std::io::{BufReader, Read, Write};
 use std::sync::Mutex;
 
-use bincode::{decode_from_std_read, encode_into_std_write};
+use postcard::{from_bytes, to_allocvec};
 
 pub struct KvStore {
     data: Mutex<HashMap<String, String>>,
@@ -51,8 +51,9 @@ impl KvStore {
             .truncate(false)
             .open(path)?;
 
-        let data: HashMap<String, String> =
-            decode_from_std_read(&mut file, bincode::config::standard())?;
+        let mut contents = Vec::new();
+        file.read_to_end(&mut contents)?;
+        let data: HashMap<String, String> = from_bytes(&contents)?;
 
         let mut store = self.data.lock().unwrap();
         *store = data;
@@ -62,7 +63,8 @@ impl KvStore {
     pub fn save_to_file(&self, path: &str) -> Result<(), Box<dyn std::error::Error>> {
         let data = self.data.lock().unwrap();
         let mut file = File::create(path)?;
-        encode_into_std_write(&*data, &mut file, bincode::config::standard())?;
+        let bytes = to_allocvec(&*data)?;
+        file.write_all(&bytes)?;
         Ok(())
     }
 }

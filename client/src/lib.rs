@@ -1,8 +1,9 @@
-use bincode::{borrow_decode_from_slice, encode_to_vec, Decode, Encode};
+use postcard::{from_bytes, to_allocvec};
+use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
 use std::net::TcpStream;
 
-#[derive(Decode, Encode, Debug)]
+#[derive(Deserialize, Serialize, Debug)]
 pub enum Message {
     Get(String),
     Set(String, String),
@@ -22,7 +23,7 @@ impl KvStoreClient {
         let mut stream = TcpStream::connect(&self.address)?;
 
         let get_message = Message::Get(key);
-        let get_data = encode_to_vec(&get_message, bincode::config::standard()).unwrap();
+        let get_data = to_allocvec(&get_message).unwrap();
         let get_len = get_data.len() as u32;
         let get_len_buf = get_len.to_be_bytes();
 
@@ -36,8 +37,7 @@ impl KvStoreClient {
         let mut data = vec![0u8; len];
         stream.read_exact(&mut data)?;
 
-        let (response, _): (Message, usize) =
-            borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
+        let response: Message = from_bytes(&data).unwrap();
         match response {
             Message::Response(value) => Ok(value),
             _ => Err("Unexpected response".into()),
@@ -48,7 +48,7 @@ impl KvStoreClient {
         let mut stream = TcpStream::connect(&self.address)?;
 
         let set_message = Message::Set(key, value);
-        let set_data = encode_to_vec(&set_message, bincode::config::standard()).unwrap();
+        let set_data = to_allocvec(&set_message).unwrap();
         let set_len = set_data.len() as u32;
         let set_len_buf = set_len.to_be_bytes();
 
@@ -62,8 +62,7 @@ impl KvStoreClient {
         let mut data = vec![0u8; len];
         stream.read_exact(&mut data)?;
 
-        let (response, _): (Message, usize) =
-            borrow_decode_from_slice(&data, bincode::config::standard()).unwrap();
+        let response: Message = from_bytes(&data).unwrap();
         match response {
             Message::Response(None) => Ok(()),
             _ => Err("Unexpected response".into()),
