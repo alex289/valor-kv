@@ -8,8 +8,3 @@ allow = [
     "ISC",
     "Zlib",
 ]
-
-[advisories]
-ignore = [
-    "atomic-polyfill@1.0.3",
-]
