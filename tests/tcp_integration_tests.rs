@@ -9,7 +9,7 @@ mod tests {
     };
     use valor_kv_client::KvStoreClient;
 
-    #[derive(Decode, Encode, Debug)]
+    #[derive(Serialize, Deserialize, Debug)]
     enum Message {
         Get(String),
         Set(String, String),
