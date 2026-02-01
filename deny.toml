@@ -6,5 +6,10 @@ allow = [
     "Unicode-3.0",
     "BSD-3-Clause",
     "ISC",
-    "Zlib"
+    "Zlib",
+]
+
+[advisories]
+ignore = [
+    "atomic-polyfill@1.0.3",
 ]
